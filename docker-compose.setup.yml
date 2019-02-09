@@ -9,23 +9,19 @@ services:
       - db_nw
 
   pyramid_app:
-#    build: .
-#    stdin_open: true
-#    tty: true
+    build:
+        context: .
+        dockerfile: testsite.Dockerfile
+    stdin_open: true
+    tty: true
     image: image_from_dockerfile
     env_file:
       - ./resources/postgres_config/env_file
     volumes:
-      # - ./volumes/pyramid_app_config:/app/site_config
       - ./volumes/src:/app/src
       - ./volumes/venv:/app/venv
-#    - ./logs:/var/log
-#    - ./config:/etc/appconfig
     image: image_from_dockerfile
     working_dir: /app
-    # expose:
-    #   - 6543
-#    command: /app/venv/bin/pserve /app/site_config/development.ini --reload
     command: >
       sh -c "mkdir -p /app/venv &&
              python3 -m venv /app/venv &&
@@ -34,19 +30,6 @@ services:
              /app/venv/bin/pip install -r /app/src/requirements.pip &&
              /app/venv/bin/pip install -e '/app/src[testing]' &&
              /app/venv/bin/pserve /app/src/development.ini --reload"
-
-    ## /volumes/pyramid_app_config/requirements.pip /app/site_config/requirements.pip
-    # /app/venv/bin/pip install -r /app/site_config/requirements.pip
-    ## /volumes/pyramid_app_config/setup.py /app/setup.py
-    # /app/venv/bin/pip install -e "./app[testing]"
-    # /app/venv/bin/pserve /app/testsite_config/development.ini --reload
-
-    # command: >
-    #   sh -c "virtualenv /app/venv &&
-    #          /app/venv/bin/pip install -r /app/testsite_config/requirements.pip &&
-    #          /app/venv/bin/pip install -e '.[testing]' &&
-    #          /app/venv/bin/pserve /app/testsite_config/development.ini --reload"
-    # /app/venv/bin/pserve /app/testsite_config/development.ini --reload
     networks:
       - db_nw
       - web_nw
