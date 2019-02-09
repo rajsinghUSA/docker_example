@@ -6,10 +6,9 @@ here = os.path.abspath(os.path.dirname(__file__))
 #README = open(os.path.join(here, 'README.txt')).read()
 #CHANGES = open(os.path.join(here, 'CHANGES.txt')).read()
 
-requires=['pyramid>=1.4',
+requires=['pyramid>=1.10',
           'pyramid_jinja2',
-          'jinja2',
-          'jinja2_alchemy_starter',
+          # 'jinja2_alchemy_starter',
           'sqlalchemy',
           'waitress',
           'pyramid_tm',
